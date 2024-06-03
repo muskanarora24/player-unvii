@@ -49,10 +49,7 @@ class VideoPlayer extends React.PureComponent {
     let { videoUrl } = this.props;
 
     console.log("videoUrl in player", videoUrl);
-    // add https:// to url
-    videoUrl = "https://" + videoUrl;
 
-    console.log("videoUrl in player after adding", videoUrl);
     const video = this.videoComponent.current;
     const videoContainer = this.videoContainer.current;
 
@@ -101,4 +98,4 @@ class VideoPlayer extends React.PureComponent {
   }
 }
 
-export default VideoPlayer;
+export default VideoPlayer;
