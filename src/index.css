@@ -1,0 +1,12 @@
+.video-container{
+  width: 100vw;
+  height: 95vh;
+  margin: auto;
+  max-width: 100%;
+}
+
+.shaka-video{
+  width: 100%;
+  background-color: black;
+  height: 100%;
+}
