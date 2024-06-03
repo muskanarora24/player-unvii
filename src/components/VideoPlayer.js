@@ -1,6 +1,6 @@
-import React from 'react';
-import 'shaka-player/dist/controls.css';
-const shaka = require('shaka-player/dist/shaka-player.ui.js');
+import React from "react";
+import "shaka-player/dist/controls.css";
+const shaka = require("shaka-player/dist/shaka-player.ui.js");
 
 class VideoPlayer extends React.PureComponent {
   constructor(props) {
@@ -21,7 +21,7 @@ class VideoPlayer extends React.PureComponent {
   }
 
   onError(error) {
-    console.error('Error code', error.code, 'object', error);
+    console.error("Error code", error.code, "object", error);
   }
 
   componentDidMount() {
@@ -46,13 +46,19 @@ class VideoPlayer extends React.PureComponent {
   }
 
   async initPlayer() {
-    const { videoUrl } = this.props;
+    let { videoUrl } = this.props;
+
+    console.log("videoUrl in player", videoUrl);
+    // add https:// to url
+    videoUrl = "https://" + videoUrl;
+
+    console.log("videoUrl in player after adding", videoUrl);
     const video = this.videoComponent.current;
     const videoContainer = this.videoContainer.current;
 
     if (!this.player) {
       this.player = new shaka.Player(video);
-      this.player.addEventListener('error', this.onErrorEvent);
+      this.player.addEventListener("error", this.onErrorEvent);
     }
 
     if (!this.ui) {
@@ -62,13 +68,13 @@ class VideoPlayer extends React.PureComponent {
 
     try {
       await this.player.load(videoUrl);
-      console.log('The video has now been loaded!');
+      console.log("The video has now been loaded!");
 
       // Autoplay the video with mute
       video.muted = true; // Ensure the video is muted
       video.play();
       // video.allowFullScreen()
-      console.log(video)
+      console.log(video);
 
       video.presentFullscreenPlayer();
 
@@ -81,7 +87,6 @@ class VideoPlayer extends React.PureComponent {
       // } else if (videoContainer.msRequestFullscreen) { // IE/Edge
       //   videoContainer.msRequestFullscreen();
       // }
- 
     } catch (error) {
       this.onError(error);
     }
