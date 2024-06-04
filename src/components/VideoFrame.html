@@ -6,6 +6,16 @@
   <title>Video Player</title>
 </head>
 <body style="background-color: black;">
-  <iframe style="width: 99vw; height: 94vh;" src='http://localhost:3000/app/https://cdn.ottanalytics.com/99c5393e-b800-4842-8782-344137c8f853/playlist.m3u8?isembed=true' id='dashboard-frame'  allowfullscreen frameborder='0'></iframe>
+
+  <img id="go-back" src="../images/image.png" width="20" height="20" style="cursor: pointer;">
+
+  <iframe style="width: 99vw; height: 93vh;" src='http://localhost:3000/app/https://cdn.ottanalytics.com/99c5393e-b800-4842-8782-344137c8f853/playlist.m3u8?isembed=true' id='dashboard-frame' allowfullscreen frameborder='0'></iframe>
+
+  <script>
+    document.getElementById("go-back").addEventListener("click", () => {
+      console.log("click ")
+      history.back();
+    });
+  </script>
 </body>
 </html>
