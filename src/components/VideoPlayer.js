@@ -8,12 +8,16 @@ class VideoPlayer extends React.PureComponent {
 
     this.videoComponent = React.createRef();
     this.videoContainer = React.createRef();
-    // this.videoContainer.presentFullscreenPlayer()
     this.onErrorEvent = this.onErrorEvent.bind(this);
     this.onError = this.onError.bind(this);
 
     this.player = null;
     this.ui = null;
+
+    this.state = {
+      loading: true, // Initially set loading to true
+      playing: false, // Add a state variable for playing state
+    };
   }
 
   onErrorEvent(event) {
@@ -28,8 +32,12 @@ class VideoPlayer extends React.PureComponent {
     this.initPlayer();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.videoUrl !== this.props.videoUrl) {
+  componentDidUpdate(prevProps, prevState) {
+    // Update player only if video URL changes or loading state changes
+    if (
+      prevProps.videoUrl !== this.props.videoUrl ||
+      prevState.loading !== this.state.loading
+    ) {
       this.initPlayer();
     }
   }
@@ -67,35 +75,44 @@ class VideoPlayer extends React.PureComponent {
       await this.player.load(videoUrl);
       console.log("The video has now been loaded!");
 
-      // Autoplay the video with mute
-      video.muted = true; // Ensure the video is muted
-      video.play();
-      // video.allowFullScreen()
-      console.log(video);
+      // Autoplay with mute (consider adding a prop for user control)
+      video.muted = true;
+      await video.play();
 
-      video.presentFullscreenPlayer();
+      this.setState({ loading: false, playing: true }); // Update loading and playing state
 
-      // if (videoContainer.requestFullscreen) {
-      //   videoContainer.requestFullscreen();
-      // } else if (videoContainer.mozRequestFullScreen) { // Firefox
-      //   videoContainer.mozRequestFullScreen();
-      // } else if (videoContainer.webkitRequestFullscreen) { // Chrome, Safari and Opera
-      //   videoContainer.webkitRequestFullscreen();
-      // } else if (videoContainer.msRequestFullscreen) { // IE/Edge
-      //   videoContainer.msRequestFullscreen();
-      // }
+      // Optionally, handle ended event to reset loading state
+      // video.addEventListener("ended", () => {
+      //   this.setState({ loading: true }); // Reset loading when video ends
+      // });
     } catch (error) {
       this.onError(error);
     }
   }
 
   render() {
+    const { loading, playing } = this.state;
+
     return (
       <div className="video-container" ref={this.videoContainer}>
+        {loading && !playing && ( // Show loading GIF only if loading and not playing
+          <img
+            src="https://i.gifer.com/ZKZg.gif"
+            alt="Loading..."
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "60px",
+              height: "60px",
+            }}
+          />
+        )}
         <video className="shaka-video" ref={this.videoComponent} />
       </div>
     );
   }
 }
 
-export default VideoPlayer;
+export default VideoPlayer;
